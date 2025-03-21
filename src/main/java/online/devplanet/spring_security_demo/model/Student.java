@@ -1,4 +1,4 @@
-package online.devplanet.spring_security_demo;
+package online.devplanet.spring_security_demo.model;
 
 
 import lombok.AllArgsConstructor;

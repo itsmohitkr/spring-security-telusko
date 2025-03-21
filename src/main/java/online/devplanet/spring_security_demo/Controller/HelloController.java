@@ -1,4 +1,4 @@
-package online.devplanet.spring_security_demo;
+package online.devplanet.spring_security_demo.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;

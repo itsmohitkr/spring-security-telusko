@@ -1,6 +1,7 @@
-package online.devplanet.spring_security_demo;
+package online.devplanet.spring_security_demo.Controller;
 
 
+import online.devplanet.spring_security_demo.model.Student;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
