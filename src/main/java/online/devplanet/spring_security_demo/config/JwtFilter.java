@@ -27,9 +27,12 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     ApplicationContext context;
 
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 🔹 Extract JWT from cookies
+        //  Extract JWT from cookies
         String token = extractTokenFromCookies(request);
         String username = null;
 
@@ -39,13 +42,14 @@ public class JwtFilter extends OncePerRequestFilter {
         // check if the username is not null and the security context is not authenticated
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // get the user details
-            UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(username);
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
             // check if the token is valid
             if (jwtService.validateToken(token, userDetails)) {
                 // create the authentication object
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
             }
         }
         filterChain.doFilter(request, response);

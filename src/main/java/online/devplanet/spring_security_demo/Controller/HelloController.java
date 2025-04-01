@@ -17,7 +17,7 @@ public class HelloController {
         // about page
         @GetMapping("about")
         public String about(HttpServletRequest request) {
-            return "This is the about page" + request.getRequestedSessionId();
+            return "This is the about page";
         }
 
         // get csrf token

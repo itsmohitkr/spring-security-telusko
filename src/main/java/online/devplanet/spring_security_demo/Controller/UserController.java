@@ -41,16 +41,11 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    // get user
-    @GetMapping("/users")
-    public List<User> findAllUser() {
-        return userService.finaAllUser();
-    }
-
     // for login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        // get userid from authentication
 
         if (authentication.isAuthenticated()){
             String jwtToken= jwtService.generateToken(user.getUsername());

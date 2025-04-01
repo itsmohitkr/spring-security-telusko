@@ -1,18 +1,14 @@
 package online.devplanet.spring_security_demo.Repo;
 
+import online.devplanet.spring_security_demo.model.Student;
 import online.devplanet.spring_security_demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Integer> {
-    User findByUsername(String username);
+public interface StudentRepo extends JpaRepository<Student, Integer> {
 
-
-    int findUserIdByUsername(String username);
-
-
+    List<Student> findAllByUser(User user);
 }

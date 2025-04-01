@@ -1,25 +1,22 @@
 package online.devplanet.spring_security_demo.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
+@Entity
+public class Books {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private int bookId;
+    private String bookName;
+    private String price;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-    @Column(unique = true, nullable = false)
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "student_id",nullable = false)
+    private Student student;
 }

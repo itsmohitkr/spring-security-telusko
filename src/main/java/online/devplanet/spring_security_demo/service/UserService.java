@@ -17,7 +17,18 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public List<User> finaAllUser() {
+
+    public List<User> findAllUser() {
         return userRepo.findAll();
+    }
+
+    public int getUserIdByUsername(String username) {
+
+        return userRepo.findUserIdByUsername(username);
+
+    }
+
+    public User getUserByUsername(String userName) {
+        return userRepo.findByUsername(userName);
     }
 }
