@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UserController {
@@ -48,7 +49,8 @@ public class UserController {
         // get userid from authentication
 
         if (authentication.isAuthenticated()){
-            String jwtToken= jwtService.generateToken(user.getUsername());
+            User userFromDb = userService.getUserByUsername(user.getUsername());
+            String jwtToken= jwtService.generateToken(userFromDb.getUsername(), userFromDb.getUserId());
             ResponseCookie cookie =ResponseCookie.from("JWT-TOKEN", jwtToken)
                     .httpOnly(true)
                     .secure(true)

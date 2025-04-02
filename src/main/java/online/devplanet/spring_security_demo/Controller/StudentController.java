@@ -20,14 +20,14 @@ public class StudentController {
 
     // get student
     @GetMapping("/student")
-    public List<Student> getStudent(Authentication authentication) {
-        return studentSevice.getAllStudent(authentication);
+    public List<Student> getStudent() {
+        return studentSevice.getAllStudent();
     }
 
     // create student
     @PostMapping("/student")
-    public Student createStudent(@RequestBody Student student, Authentication authentication) {
-        return studentSevice.add(student,authentication);
+    public Student createStudent(@RequestBody Student student) {
+        return studentSevice.add(student);
     }
 
 }

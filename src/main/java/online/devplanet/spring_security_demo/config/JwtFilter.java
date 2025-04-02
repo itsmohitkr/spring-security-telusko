@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import online.devplanet.spring_security_demo.model.UserPrincipal;
 import online.devplanet.spring_security_demo.service.JwtService;
 import online.devplanet.spring_security_demo.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,21 +36,24 @@ public class JwtFilter extends OncePerRequestFilter {
         //  Extract JWT from cookies
         String token = extractTokenFromCookies(request);
         String username = null;
+        String userId = null;
 
         if (token != null) {
             username = jwtService.extractUsername(token);
+            userId = jwtService.extractUserId(token);
         }
         // check if the username is not null and the security context is not authenticated
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // get the user details
-            UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
+//            UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = myUserDetailsService.loadUserByUserId(userId);
+
             // check if the token is valid
             if (jwtService.validateToken(token, userDetails)) {
                 // create the authentication object
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UserAuthenticationToken authToken = new UserAuthenticationToken(userDetails, null, userDetails.getAuthorities(), userId);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
             }
         }
         filterChain.doFilter(request, response);

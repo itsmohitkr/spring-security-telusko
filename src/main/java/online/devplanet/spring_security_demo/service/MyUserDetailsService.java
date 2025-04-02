@@ -25,6 +25,15 @@ public class MyUserDetailsService implements UserDetailsService {
            System.out.println("User not found");
            throw new UsernameNotFoundException("User not found");
        }
-       return new UserPrincipal(user);
+       return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword());
+    }
+
+    public UserDetails loadUserByUserId(String userId) {
+        User user = userRepo.findByUserId(UUID.fromString(userId));
+        if(user==null){
+            System.out.println("User not found");
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword());
     }
 }

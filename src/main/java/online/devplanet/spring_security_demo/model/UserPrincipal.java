@@ -1,5 +1,7 @@
 package online.devplanet.spring_security_demo.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,11 +11,23 @@ import java.util.UUID;
 
 public class UserPrincipal implements UserDetails {
 
-    private User user;
+    private UUID userId;
+    private String userName;
+    private String password;
 
-    public UserPrincipal(User user) {
-        this.user = user;
+    public UserPrincipal(UUID userId, String userName, String password) {
+        this.userId = userId;
+        this.userName = userName;
+        this.password = password;
     }
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -22,12 +36,12 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userName;
     }
     @Override
     public boolean isAccountNonExpired() {
