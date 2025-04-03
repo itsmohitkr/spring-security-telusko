@@ -3,6 +3,7 @@ package online.devplanet.spring_security_demo.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,10 +29,15 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
 
     @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setPasswordEncoder(passwordEncoder());
         return  provider;
     }
 
@@ -40,8 +46,10 @@ public class SecurityConfig {
                 http
                         .csrf((customizer) -> customizer.disable())
                         .authorizeHttpRequests(request->request
-                        .requestMatchers("register","login").permitAll()
-                        .anyRequest().authenticated())
+                                .requestMatchers("register","login").permitAll()
+                              .requestMatchers(HttpMethod.POST,"/student").hasAnyRole("USER","ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/about").hasAnyRole("ADMIN")
+                                .anyRequest().authenticated())
                         .httpBasic(Customizer.withDefaults())
                         .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -52,6 +60,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-
 }

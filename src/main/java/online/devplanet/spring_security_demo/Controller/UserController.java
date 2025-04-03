@@ -1,7 +1,6 @@
 package online.devplanet.spring_security_demo.Controller;
 
 import jakarta.servlet.http.HttpServletResponse;
-import online.devplanet.spring_security_demo.Repo.UserRepo;
 import online.devplanet.spring_security_demo.model.User;
 import online.devplanet.spring_security_demo.service.JwtService;
 import online.devplanet.spring_security_demo.service.UserService;
@@ -13,13 +12,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class UserController {
@@ -60,7 +55,6 @@ public class UserController {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok("login Successful! Jwt stored in cookie");
-
         }
 
         return ResponseEntity.status(401).body("Login failed");

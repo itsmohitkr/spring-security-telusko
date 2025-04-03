@@ -4,11 +4,14 @@ import online.devplanet.spring_security_demo.Repo.UserRepo;
 import online.devplanet.spring_security_demo.model.User;
 import online.devplanet.spring_security_demo.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +28,9 @@ public class MyUserDetailsService implements UserDetailsService {
            System.out.println("User not found");
            throw new UsernameNotFoundException("User not found");
        }
-       return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword());
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
+        return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword(),authorities);
+
     }
 
     public UserDetails loadUserByUserId(String userId) {
@@ -34,6 +39,7 @@ public class MyUserDetailsService implements UserDetailsService {
             System.out.println("User not found");
             throw new UsernameNotFoundException("User not found");
         }
-        return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword());
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
+        return new UserPrincipal(user.getUserId(),user.getUsername(),user.getPassword(),authorities);
     }
 }

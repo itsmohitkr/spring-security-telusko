@@ -37,10 +37,12 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = extractTokenFromCookies(request);
         String username = null;
         String userId = null;
+        String role = null;
 
         if (token != null) {
             username = jwtService.extractUsername(token);
             userId = jwtService.extractUserId(token);
+//            role = jwtService.extractRole(token);
         }
         // check if the username is not null and the security context is not authenticated
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
